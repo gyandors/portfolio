@@ -21,7 +21,7 @@ export async function GET() {
   const skills = await collection.find({}).toArray();
   const projects = await collection2.find({}).toArray();
   const notes = await collection3.find({}).toArray();
-  const resume = await collection4.find({}).toArray();
+  const resume = await collection4.findOne({});
 
   await client.close();
 

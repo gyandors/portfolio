@@ -12,7 +12,8 @@ export default async function Home() {
   let skills = [];
   let projects = [];
   let notes = [];
-  let resume = [];
+  let resume = { link: "" };
+
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const response = await fetch(`${baseUrl}/api`);
@@ -31,7 +32,7 @@ export default async function Home() {
     <>
       <Header />
       <main className="min-h-screen text-white">
-        <Hero resume={resume[0]} />
+        <Hero resume={resume} />
         <Skills skills={skills} />
         <Projects projects={projects} />
         <Notes notes={notes} />
