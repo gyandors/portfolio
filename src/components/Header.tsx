@@ -4,16 +4,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { FaHome } from "react-icons/fa";
+import { GiSkills } from "react-icons/gi";
+import { GrProjects } from "react-icons/gr";
+import { FaNoteSticky } from "react-icons/fa6";
+import { RiContactsFill } from "react-icons/ri";
 
 export default function Header() {
   const [activeSection, setActiveSection] = useState("home");
 
   const links = [
-    { id: "1", title: "Home" },
-    { id: "2", title: "Skills" },
-    { id: "3", title: "Projects" },
-    { id: "4", title: "Notes" },
-    { id: "6", title: "Contact" },
+    { id: "1", title: "Home", icon: <FaHome className="h-6 w-8" /> },
+    { id: "2", title: "Skills", icon: <GiSkills className="h-6 w-6" /> },
+    { id: "3", title: "Projects", icon: <GrProjects className="h-6 w-5" /> },
+    { id: "4", title: "Notes", icon: <FaNoteSticky className="h-6 w-6" /> },
+    { id: "6", title: "Contact", icon: <RiContactsFill className="h-6 w-6" /> },
   ];
 
   useEffect(() => {
@@ -41,7 +46,7 @@ export default function Header() {
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-11/12 py-3 px-5 md:px-8 fixed z-50 top-6 left-0 right-0 m-auto border rounded-full border-gray-400/40 backdrop-blur-md bg-black/50"
+      className="w-11/12 px-5 md:px-8 fixed z-50 top-6 left-0 right-0 m-auto border rounded-full border-gray-400/40 backdrop-blur-md bg-black/50"
     >
       <div className="flex justify-between items-center">
         <motion.div
@@ -59,21 +64,26 @@ export default function Header() {
             />
           </Link>
         </motion.div>
-        <nav className="hidden md:block">
-          <ul className="flex justify-between items-center gap-8">
+        <nav>
+          <ul className="flex justify-between items-center gap-4 sm:gap-8">
             {links.map((link) => {
               const isActive = activeSection === link.title.toLowerCase();
               return (
                 <li key={link.id}>
                   <Link
                     href={`#${link.title.toLowerCase()}`}
-                    className={`relative font-medium px-2 py-[16px] transition-colors duration-300 ${
-                      isActive
-                        ? "text-cyan-500 border-b-2 border-cyan-500"
-                        : "hover:text-cyan-500 text-white"
-                    }`}
+                    className="font-medium text-white"
                   >
-                    {link.title}
+                    <div
+                      className={`py-4 border-b-2 ${
+                        isActive
+                          ? "text-cyan-500 border-cyan-500"
+                          : "border-transparent"
+                      }`}
+                    >
+                      <span className="hidden md:block">{link.title}</span>
+                      <span className="md:hidden">{link.icon}</span>
+                    </div>
                   </Link>
                 </li>
               );

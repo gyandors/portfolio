@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 
-export default function Hero() {
+export default function Hero({ resume }: { resume: { link: string } }) {
   return (
     <section
       id="home"
@@ -48,9 +48,7 @@ export default function Hero() {
           <div className="mt-8 font-semibold">
             <a
               className="rounded border border-yellow-400 bg-yellow-400 hover:bg-yellow-500 hover:border-yellow-500 text-black p-2 transition-colors duration-300"
-              href={
-                process.env.NEXT_PUBLIC_RESUME_URL || "Sachin_Gyandor_CV.pdf"
-              }
+              href={resume.link || "Sachin_Gyandor_CV.pdf"}
               target="_blank"
             >
               Resume
