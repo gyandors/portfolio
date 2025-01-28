@@ -45,14 +45,14 @@ export default function Header() {
     <motion.header
       initial={{ opacity: 0, y: -100 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 1 }}
       className="w-11/12 px-5 md:px-8 fixed z-50 top-6 left-0 right-0 m-auto border rounded-full border-gray-400/40 backdrop-blur-md bg-black/50"
     >
       <div className="flex justify-between items-center">
         <motion.div
           initial={{ opacity: 0, scale: 8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
+          transition={{ duration: 1, delay: 1 }}
           className="h-8 w-8"
         >
           <Link href="/">

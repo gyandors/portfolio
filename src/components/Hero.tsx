@@ -14,7 +14,7 @@ export default function Hero({ resume }: { resume: { link: string } }) {
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
+          transition={{ duration: 1, delay: 1 }}
           className="md:w-1/2"
         >
           <p className="text-xl">Hi there, I&apos;m</p>
@@ -56,8 +56,8 @@ export default function Hero({ resume }: { resume: { link: string } }) {
           </div>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="md:w-1/2 drop-shadow-[0px_0px_8px_rgba(6,181,212,1)]"
         >
