@@ -14,18 +14,16 @@ export async function GET() {
 
   const db = client.db("gyandors");
   const collection = db.collection("skills");
-  const collection2 = db.collection("projects");
   const collection3 = db.collection("notes");
   const collection4 = db.collection("resume");
 
   const skills = await collection.find({}).toArray();
-  const projects = await collection2.find({}).toArray();
   const notes = await collection3.find({}).toArray();
   const resume = await collection4.findOne({});
 
   await client.close();
 
-  return NextResponse.json({ skills, projects, notes, resume });
+  return NextResponse.json({ skills, notes, resume });
 }
 
 export async function POST(request: Request) {

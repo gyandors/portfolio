@@ -10,7 +10,6 @@ export const revalidate = 3600;
 
 export default async function Home() {
   let skills = [];
-  let projects = [];
   let notes = [];
   let resume = { link: "" };
 
@@ -23,7 +22,7 @@ export default async function Home() {
     }
 
     const data = await response.json();
-    ({ skills, projects, notes, resume } = data);
+    ({ skills, notes, resume } = data);
   } catch (error) {
     console.error("Failed to fetch data:", error);
   }
@@ -34,7 +33,7 @@ export default async function Home() {
       <main className="min-h-screen text-white">
         <Hero resume={resume} />
         <Skills skills={skills} />
-        <Projects projects={projects} />
+        <Projects />
         <Notes notes={notes} />
         <Contact />
       </main>

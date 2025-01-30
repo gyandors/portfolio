@@ -1,40 +1,58 @@
-"use client";
+import ProjectItem from "./ProjectItem";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+const projects = [
+  {
+    _id: "1",
+    title: "Budget Buddy",
+    description:
+      "Developed a user-friendly expense tracker application using React to manage and monitor personal finances effectively. Implemented features such as adding, editing, and deleting expenses with real-time updates to the UI. Utilized Redux to manage state and lifecycle methods for an optimized user experience. Implemented user authentication using Firebase, providing secure login and registration functionalities. Leveraged Firebase for real-time database management, enabling seamless data storage and retrieval.",
+    image: [
+      "/images/budget-buddy/1.png",
+      "/images/budget-buddy/2.png",
+      "/images/budget-buddy/3.png",
+      "/images/budget-buddy/4.png",
+      "/images/budget-buddy/5.png",
+      "/images/budget-buddy/6.png",
+      "/images/budget-buddy/7.png",
+      "/images/budget-buddy/8.png",
+      "/images/budget-buddy/9.png",
+      "/images/budget-buddy/10.png",
+      "/images/budget-buddy/11.png",
+    ],
+    link: "https://budgetbuddy-byg.web.app/",
+    github: "https://github.com/gyandors/budget-buddy/",
+  },
+  {
+    _id: "2",
+    title: "Rmail - The Email Service",
+    description:
+      "Developed a comprehensive mail application using React to facilitate efficient email communication. Implemented features such as composing, sending, receiving, and organizing emails for enhanced user productivity. Designed a clean and intuitive UI with Tailwind CSS, improving user experience and accelerating development with utility-first styling. Ensured secure email transactions by implementing authentication and authorization mechanisms using Firebase.",
+    image: [
+      "/images/mail/1.png",
+      "/images/mail/2.png",
+      "/images/mail/3.png",
+      "/images/mail/4.png",
+      "/images/mail/5.png",
+    ],
+    link: "https://mail-box-c1237.web.app/",
+    github: "https://github.com/gyandors/Rmail/",
+  },
+  {
+    _id: "3",
+    title: "E-Commerce",
+    description:
+      "Implemented routing with React Router, enabling seamless navigation between product pages. Utilized Context API for state management, ensuring efficient data flow and component communication. Designed a visually appealing UI with Vanilla CSS, focusing on user interface design principles and responsive layouts. Implemented shopping cart functionality, allowing users to add and remove items dynamically.",
+    image: [
+      "/images/e-comm/1.png",
+      "/images/e-comm/2.png",
+      "/images/e-comm/3.png",
+    ],
+    link: "https://regimie.web.app/",
+    github: "https://github.com/gyandors/Regimie/",
+  },
+];
 
-import { ArrowUpRightIcon, GitHubIcon } from "../../public/icons";
-
-interface Project {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-  github: string;
-}
-
-export default function Projects({ projects }: { projects: Project[] }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // Auto-slide effect
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-
-    if (isAutoPlaying) {
-      interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % projects.length);
-      }, 5000); // Change slide every 5 seconds
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [isAutoPlaying, projects]);
-
+export default function Projects() {
   return (
     <section
       id="projects"
@@ -45,76 +63,11 @@ export default function Projects({ projects }: { projects: Project[] }) {
           Projects
         </h1>
 
-        {projects.length > 0 && (
-          <div>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              {/* Image Section */}
-              <div className="w-full md:w-1/2 relative aspect-video">
-                <Image
-                  key={currentIndex}
-                  src={projects[currentIndex].image}
-                  alt={projects[currentIndex].title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover rounded-lg animate-fadeIn"
-                />
-              </div>
-
-              {/* Content Section */}
-              <div
-                key={currentIndex}
-                className="w-full md:w-1/2 space-y-4 animate-fadeIn"
-              >
-                <h2 className="text-xl font-bold">
-                  {projects[currentIndex].title}
-                </h2>
-                <p className="text-gray-300">
-                  {projects[currentIndex].description}
-                </p>
-
-                {/* Project Links */}
-                <div className="flex gap-4">
-                  <a
-                    href={projects[currentIndex].link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-cyan-500 transition-colors"
-                  >
-                    <ArrowUpRightIcon className="w-6 h-6" />
-                  </a>
-                  <a
-                    href={projects[currentIndex].github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-cyan-500 transition-colors"
-                  >
-                    <GitHubIcon className="w-6 h-6" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Dots Navigation */}
-            <div className="flex justify-center gap-2 mt-20">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setCurrentIndex(index);
-                    setIsAutoPlaying(false);
-                  }}
-                  onMouseEnter={() => setIsAutoPlaying(false)}
-                  onMouseLeave={() => setIsAutoPlaying(true)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    currentIndex === index
-                      ? "bg-cyan-500 w-6"
-                      : "bg-cyan-900 hover:bg-cyan-700"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="w-full space-y-12">
+          {projects.map((project) => (
+            <ProjectItem key={project._id} project={project} />
+          ))}
+        </div>
       </div>
     </section>
   );

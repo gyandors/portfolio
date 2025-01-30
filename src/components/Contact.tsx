@@ -45,7 +45,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="name"
-                className="text-sm font-semibold text-white mb-2 block"
+                className="text-sm font-semibold text-gray-300 mb-2 block"
               >
                 Name
               </label>
@@ -64,7 +64,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="email"
-                className="text-sm font-semibold text-white mb-2 block"
+                className="text-sm font-semibold text-gray-300 mb-2 block"
               >
                 Email
               </label>
@@ -83,7 +83,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="message"
-                className="text-sm font-semibold text-white mb-2 block"
+                className="text-sm font-semibold text-gray-300 mb-2 block"
               >
                 Message
               </label>
