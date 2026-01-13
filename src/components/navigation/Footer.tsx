@@ -1,28 +1,6 @@
-import {
-  GitHubIcon,
-  TwitterIcon,
-  LinkedInIcon,
-  FacebookIcon,
-} from "../../public/icons";
+"use client";
 
-const links = [
-  {
-    icon: LinkedInIcon,
-    href: "https://linkedin.com/in/gyandors",
-  },
-  {
-    icon: FacebookIcon,
-    href: "https://facebook.com/gyandors",
-  },
-  {
-    icon: TwitterIcon,
-    href: "https://twitter.com/gyandors",
-  },
-  {
-    icon: GitHubIcon,
-    href: "https://github.com/gyandors",
-  },
-];
+import { socialLinks } from "@/utils/constants";
 
 export default function Footer() {
   return (
@@ -33,8 +11,13 @@ export default function Footer() {
             © {new Date().getFullYear()} Sachin Gyandor. All rights reserved.
           </div>
           <div className="flex space-x-4 mt-2 md:mt-0">
-            {links.map((link) => (
-              <a key={link.href} href={link.href} target="_blank">
+            {socialLinks.map((link) => (
+              <a
+                key={link.id}
+                href={link.link}
+                title={link.title}
+                target="_blank"
+              >
                 <link.icon className="w-6 h-6 hover:text-cyan-500 transition-colors" />
               </a>
             ))}

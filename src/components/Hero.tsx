@@ -1,11 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+import { motion } from "motion/react";
 import { TypeAnimation } from "react-type-animation";
+
 import SocialLinks from "./SocialLinks";
 
-export default function Hero({ resume }: { resume: { link: string } }) {
+export default function Hero({ resume }: { resume: string }) {
   return (
     <section
       id="home"
@@ -37,7 +38,7 @@ export default function Hero({ resume }: { resume: { link: string } }) {
                 2000,
               ]}
               repeat={Infinity}
-              preRenderFirstString={true}
+              preRenderFirstString
             />
           </div>
           <p className="mt-5 text-gray-100 tracking-wide">
@@ -50,7 +51,7 @@ export default function Hero({ resume }: { resume: { link: string } }) {
           <div className="mt-8 font-semibold">
             <a
               className="rounded border border-yellow-400 bg-yellow-400 hover:bg-yellow-500 hover:border-yellow-500 text-black p-2 transition-colors duration-300"
-              href={resume.link || "Sachin_Gyandor_CV.pdf"}
+              href={resume || "/Sachin_Gyandor_CV.pdf"}
               target="_blank"
             >
               Resume

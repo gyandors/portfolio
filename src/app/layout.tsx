@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Sachin Gyandor - Web Developer",
+  title: "Sachin Gyandor — A full stack web developer",
   description:
     "Explore the portfolio of Sachin Gyandor, a passionate web developer specializing in creating responsive and dynamic web applications. Discover projects, skills, and get in touch.",
 };

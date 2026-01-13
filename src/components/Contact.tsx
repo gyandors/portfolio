@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Loading from "./Loading";
+import { IoClose } from "react-icons/io5";
+import { MdDone, MdError } from "react-icons/md";
+
+import Loader from "./common/Loader";
+import SectionHeading from "./SectionHeading";
+import Label from "./common/Label";
+import { AnimatePresence } from "motion/react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -9,23 +15,34 @@ export default function Contact() {
     email: "",
     message: "",
   });
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState<null | {
+    error?: boolean;
+    message: string;
+  }>();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setIsLoading(true);
+    try {
+      if (!formData.name || !formData.email || !formData.message)
+        throw new Error("Please enter the required details.");
 
-    const response = await fetch("/api", {
-      method: "POST",
-      body: JSON.stringify(formData),
-    });
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
 
-    if (response.ok) {
-      setStatus("success");
+      const result = await response.json();
+
+      if (!response.ok) throw new Error("Something went wrong.");
+
+      setStatus({ message: result.message });
       setFormData({ name: "", email: "", message: "" });
-    } else {
-      setStatus("error");
+    } catch (error: any) {
+      console.error(error);
+      setStatus({ error: true, message: error.message });
     }
 
     setIsLoading(false);
@@ -37,65 +54,45 @@ export default function Contact() {
       className="bg-gradient-to-b from-black via-gray-950 to-sky-950"
     >
       <div className="min-h-screen w-11/12 m-auto py-8 flex flex-col justify-center items-center">
-        <h1 className="w-full text-2xl font-semibold pb-2 mb-12 border-b-2 border-b-gray-500">
-          Contact
-        </h1>
+        <SectionHeading heading="Contact Me" />
         <div className="w-full max-w-2xl text-black">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label
-                htmlFor="name"
-                className="text-sm font-semibold text-gray-300 mb-2 block"
-              >
-                Name
-              </label>
+              <Label htmlFor="name" label="Name" />
               <input
                 type="text"
                 id="name"
-                placeholder="Name"
+                placeholder="Enter your name"
                 className="w-full p-2 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                required
               />
             </div>
             <div>
-              <label
-                htmlFor="email"
-                className="text-sm font-semibold text-gray-300 mb-2 block"
-              >
-                Email
-              </label>
+              <Label htmlFor="email" label="Email" />
               <input
                 type="email"
                 id="email"
-                placeholder="Email"
+                placeholder="Enter your email"
                 className="w-full p-2 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                required
               />
             </div>
             <div>
-              <label
-                htmlFor="message"
-                className="text-sm font-semibold text-gray-300 mb-2 block"
-              >
-                Message
-              </label>
+              <Label htmlFor="message" label="Message" />
               <textarea
                 id="message"
-                placeholder="Message"
+                placeholder="Enter your message"
                 className="w-full p-2 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
                 value={formData.message}
                 onChange={(e) =>
                   setFormData({ ...formData, message: e.target.value })
                 }
-                required
               />
             </div>
             <button
@@ -104,32 +101,32 @@ export default function Contact() {
             >
               Send
             </button>
-            {status === "success" && (
-              <p className="relative text-green-800 font-semibold w-full text-center bg-green-200 p-2 rounded-md">
-                <span>Message sent successfully</span>
+            {status && (
+              <div
+                className={`flex items-center font-semibold w-full text-center p-2 rounded-md ${
+                  status.error
+                    ? "text-red-800 bg-red-100"
+                    : "text-green-800 bg-green-100"
+                }`}
+              >
+                {status.error ? (
+                  <MdError className="size-8 text-red-500" />
+                ) : (
+                  <MdDone className="size-8 text-green-600" />
+                )}
+                <span className="flex-1">{status.message}</span>
                 <button
-                  className="absolute right-4"
-                  onClick={() => setStatus("idle")}
+                  className="hover:scale-125 transition-transform"
+                  onClick={() => setStatus(null)}
                 >
-                  x
+                  <IoClose className="size-5" />
                 </button>
-              </p>
-            )}
-            {status === "error" && (
-              <p className="relative text-red-800 font-semibold w-full text-center bg-red-200 p-2 rounded-md">
-                <span>Error sending message</span>
-                <button
-                  className="absolute right-4"
-                  onClick={() => setStatus("idle")}
-                >
-                  x
-                </button>
-              </p>
+              </div>
             )}
           </form>
         </div>
       </div>
-      {isLoading && <Loading />}
+      <AnimatePresence>{isLoading && <Loader />}</AnimatePresence>
     </section>
   );
 }

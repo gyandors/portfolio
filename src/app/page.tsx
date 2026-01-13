@@ -1,30 +1,31 @@
-import Header from "@/components/Header";
+import Header from "@/components/navigation/Header";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Notes from "@/components/Notes";
 import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
+import Footer from "@/components/navigation/Footer";
 
 export const revalidate = 3600;
 
 export default async function Home() {
-  let skills = [];
-  let notes = [];
-  let resume = { link: "" };
+  let resume;
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl = process.env.BASE_URL;
+
     const response = await fetch(`${baseUrl}/api`);
+    const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(result.message);
     }
 
-    const data = await response.json();
-    ({ skills, notes, resume } = data);
+    const data = result.data;
+
+    resume = data.link;
   } catch (error) {
-    console.error("Failed to fetch data:", error);
+    console.error(error);
   }
 
   return (
@@ -32,9 +33,9 @@ export default async function Home() {
       <Header />
       <main className="min-h-screen text-white">
         <Hero resume={resume} />
-        <Skills skills={skills} />
+        <Skills />
         <Projects />
-        <Notes notes={notes} />
+        <Notes />
         <Contact />
       </main>
       <Footer />

@@ -1,4 +1,4 @@
-# Welcome to Sachin Gyandor's official.
+# Welcome to Sachin Gyandor's official portfolio.
 
 This is my personal website where I share my projects, skills, and notes.
 

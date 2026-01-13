@@ -1,42 +1,21 @@
 import { NextResponse } from "next/server";
-import { MongoClient } from "mongodb";
 
-const uri = process.env.MONGO_URI;
-
-if (!uri) {
-  throw new Error("MONGO_URI is not set");
-}
-
-const client = new MongoClient(uri);
+import { client } from "@/utils/mongodb";
 
 export async function GET() {
-  await client.connect();
+  try {
+    await client.connect();
 
-  const db = client.db("gyandors");
-  const collection = db.collection("skills");
-  const collection3 = db.collection("notes");
-  const collection4 = db.collection("resume");
+    const db = client.db("gyandors");
+    const resume = await db.collection("resume").findOne();
 
-  const skills = await collection.find({}).toArray();
-  const notes = await collection3.find({}).toArray();
-  const resume = await collection4.findOne({});
+    await client.close();
 
-  await client.close();
+    if (!resume) throw new Error("Something went wrong.");
 
-  return NextResponse.json({ skills, notes, resume });
-}
-
-export async function POST(request: Request) {
-  const { name, email, message } = await request.json();
-
-  await client.connect();
-
-  const db = client.db("gyandors");
-  const collection = db.collection("contacts");
-
-  await collection.insertOne({ name, email, message });
-
-  await client.close();
-
-  return NextResponse.json({ message: "Contact form submitted" });
+    return NextResponse.json({ data: resume }, { status: 200 });
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
 }

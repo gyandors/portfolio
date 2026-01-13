@@ -4,26 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FaHome } from "react-icons/fa";
-import { GiSkills } from "react-icons/gi";
-import { GrProjects } from "react-icons/gr";
-import { FaNoteSticky } from "react-icons/fa6";
-import { RiContactsFill } from "react-icons/ri";
+
+import { navLinks } from "@/utils/constants";
 
 export default function Header() {
   const [activeSection, setActiveSection] = useState("home");
 
-  const links = [
-    { id: "1", title: "Home", icon: <FaHome className="h-6 w-8" /> },
-    { id: "2", title: "Skills", icon: <GiSkills className="h-6 w-6" /> },
-    { id: "3", title: "Projects", icon: <GrProjects className="h-6 w-5" /> },
-    { id: "4", title: "Notes", icon: <FaNoteSticky className="h-6 w-6" /> },
-    { id: "6", title: "Contact", icon: <RiContactsFill className="h-6 w-6" /> },
-  ];
-
   useEffect(() => {
     const handleScroll = () => {
-      const sections = links.map((link) =>
+      const sections = navLinks.map((link) =>
         document.querySelector(`#${link.title.toLowerCase()}`)
       );
       const currentSection = sections.findIndex((section) => {
@@ -33,7 +22,7 @@ export default function Header() {
       });
 
       if (currentSection !== -1) {
-        setActiveSection(links[currentSection].title.toLowerCase());
+        setActiveSection(navLinks[currentSection].title.toLowerCase());
       }
     };
 
@@ -59,30 +48,30 @@ export default function Header() {
             <Image
               src="/images/logo-white.png"
               alt="Logo"
-              width={100}
-              height={100}
+              width={200}
+              height={200}
             />
           </Link>
         </motion.div>
         <nav>
-          <ul className="flex justify-between items-center gap-4 sm:gap-8">
-            {links.map((link) => {
+          <ul className="flex justify-between items-center sm:gap-8">
+            {navLinks.map((link) => {
               const isActive = activeSection === link.title.toLowerCase();
               return (
-                <li key={link.id}>
+                <li key={link.title}>
                   <Link
                     href={`#${link.title.toLowerCase()}`}
                     className="font-medium text-white"
                   >
                     <div
-                      className={`py-4 border-b-2 ${
+                      className={`py-4 px-2 border-b-2 hover:text-cyan-500 transition-colors duration-300 ${
                         isActive
                           ? "text-cyan-500 border-cyan-500"
                           : "border-transparent"
                       }`}
                     >
                       <span className="hidden md:block">{link.title}</span>
-                      <span className="md:hidden">{link.icon}</span>
+                      <link.icon className="md:hidden size-6" />
                     </div>
                   </Link>
                 </li>
