@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { MdDone, MdError } from "react-icons/md";
+import { AnimatePresence, motion } from "motion/react";
 
 import Loader from "./common/Loader";
 import SectionHeading from "./SectionHeading";
 import Label from "./common/Label";
-import { AnimatePresence } from "motion/react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -26,9 +26,6 @@ export default function Contact() {
 
     setIsLoading(true);
     try {
-      if (!formData.name || !formData.email || !formData.message)
-        throw new Error("Please enter the required details.");
-
       const response = await fetch("/api/contact", {
         method: "POST",
         body: JSON.stringify(formData),
@@ -36,7 +33,7 @@ export default function Contact() {
 
       const result = await response.json();
 
-      if (!response.ok) throw new Error("Something went wrong.");
+      if (!response.ok) throw new Error(result.message);
 
       setStatus({ message: result.message });
       setFormData({ name: "", email: "", message: "" });
@@ -101,28 +98,35 @@ export default function Contact() {
             >
               Send
             </button>
-            {status && (
-              <div
-                className={`flex items-center font-semibold w-full text-center p-2 rounded-md ${
-                  status.error
-                    ? "text-red-800 bg-red-100"
-                    : "text-green-800 bg-green-100"
-                }`}
-              >
-                {status.error ? (
-                  <MdError className="size-8 text-red-500" />
-                ) : (
-                  <MdDone className="size-8 text-green-600" />
-                )}
-                <span className="flex-1">{status.message}</span>
-                <button
-                  className="hover:scale-125 transition-transform"
-                  onClick={() => setStatus(null)}
+            <AnimatePresence>
+              {status && (
+                <motion.div
+                  className={`flex text-xs md:text-sm items-center font-semibold w-full text-center p-2 rounded-md ${
+                    status.error
+                      ? "text-red-800 bg-red-100"
+                      : "text-green-800 bg-green-100"
+                  }`}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  exit={{ opacity: 0, y: -20 }}
                 >
-                  <IoClose className="size-5" />
-                </button>
-              </div>
-            )}
+                  {status.error ? (
+                    <MdError className="size-8 text-red-500" />
+                  ) : (
+                    <MdDone className="size-8 text-green-600" />
+                  )}
+                  <span className="flex-1">{status.message}</span>
+                  <button
+                    type="button"
+                    className="hover:scale-125 transition-transform"
+                    onClick={(e) => setStatus(null)}
+                  >
+                    <IoClose className="size-5" />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
         </div>
       </div>

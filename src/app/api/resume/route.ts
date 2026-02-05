@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { client } from "@/utils/mongodb";
+import { client } from "@/lib/db";
+import { HttpError } from "@/lib/errors";
 
 export async function GET() {
   try {
@@ -9,13 +10,16 @@ export async function GET() {
     const db = client.db("gyandors");
     const resume = await db.collection("resume").findOne();
 
-    await client.close();
-
-    if (!resume) throw new Error("Something went wrong.");
+    if (!resume) throw new HttpError("Resume not found.", 404);
 
     return NextResponse.json({ data: resume }, { status: 200 });
   } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: error.message },
+      { status: error.status },
+    );
+  } finally {
+    await client.close();
   }
 }

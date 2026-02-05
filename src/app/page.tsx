@@ -6,15 +6,13 @@ import Notes from "@/components/Notes";
 import Contact from "@/components/Contact";
 import Footer from "@/components/navigation/Footer";
 
-export const revalidate = 3600;
-
 export default async function Home() {
   let resume;
 
   try {
     const baseUrl = process.env.BASE_URL;
 
-    const response = await fetch(`${baseUrl}/api`);
+    const response = await fetch(`${baseUrl}/api/resume`);
     const result = await response.json();
 
     if (!response.ok) {
