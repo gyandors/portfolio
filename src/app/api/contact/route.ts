@@ -29,23 +29,3 @@ export async function POST(request: NextRequest) {
     await client.close();
   }
 }
-
-export async function GET() {
-  try {
-    await client.connect();
-
-    const db = client.db("gyandors");
-    const collection = db.collection("contacts");
-    const contacts = await collection.find().toArray();
-
-    return NextResponse.json({ data: contacts }, { status: 200 });
-  } catch (error: any) {
-    console.error(error);
-    return NextResponse.json(
-      { message: error.message },
-      { status: error.status },
-    );
-  } finally {
-    await client.close();
-  }
-}

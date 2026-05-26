@@ -1,28 +1,39 @@
 import Contacts from "@/components/admin/Contacts";
+import { client } from "@/lib/db";
+
+export interface Message {
+  _id: string;
+  name: string;
+  email: string;
+  message: string;
+}
+
+async function fetchData() {
+  try {
+    await client.connect();
+    const db = client.db("gyandors");
+    const collection = db.collection("contacts");
+    return await collection.find().toArray();
+  } catch (error) {
+    return [];
+  } finally {
+    await client.close();
+  }
+}
 
 export default async function Admin() {
-  let contactMessages;
+  const data = await fetchData();
 
-  try {
-    const baseUrl = process.env.BASE_URL;
-
-    const response = await fetch(`${baseUrl}/api/contact`);
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message);
-    }
-
-    const data = result.data;
-
-    contactMessages = data;
-  } catch (error) {
-    console.error(error);
-  }
+  const contacts: Message[] = data.map((c) => ({
+    _id: c._id.toString(),
+    name: c.name,
+    email: c.email,
+    message: c.message,
+  }));
 
   return (
     <section className="pt-20">
-      <Contacts contactMessages={contactMessages} />
+      <Contacts contactMessages={contacts} />
     </section>
   );
 }

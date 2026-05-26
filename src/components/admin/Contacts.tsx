@@ -1,14 +1,10 @@
+import { Message } from "@/app/admin/page";
 import DeleteButton from "./DeleteButton";
 
 export default function Contacts({
   contactMessages,
 }: {
-  contactMessages?: {
-    _id: string;
-    name: string;
-    email: string;
-    message: string;
-  }[];
+  contactMessages?: Message[];
 }) {
   return (
     <div className="p-4 md:p-8 text-white">

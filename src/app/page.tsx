@@ -5,26 +5,24 @@ import Skills from "@/components/Skills";
 import Notes from "@/components/Notes";
 import Contact from "@/components/Contact";
 import Footer from "@/components/navigation/Footer";
+import { client } from "@/lib/db";
+
+async function fetchData() {
+  try {
+    await client.connect();
+    const db = client.db("gyandors");
+    const collection = db.collection("resume");
+    return await collection.findOne();
+  } catch (error) {
+    return {};
+  } finally {
+    await client.close();
+  }
+}
 
 export default async function Home() {
-  let resume;
-
-  try {
-    const baseUrl = process.env.BASE_URL;
-
-    const response = await fetch(`${baseUrl}/api/resume`);
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.message);
-    }
-
-    const data = result.data;
-
-    resume = data.link;
-  } catch (error) {
-    console.error(error);
-  }
+  const data: { link?: string } | null = await fetchData();
+  const resume = data?.link;
 
   return (
     <>

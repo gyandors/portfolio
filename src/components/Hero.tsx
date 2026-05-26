@@ -6,7 +6,7 @@ import { TypeAnimation } from "react-type-animation";
 
 import SocialLinks from "./SocialLinks";
 
-export default function Hero({ resume }: { resume: string }) {
+export default function Hero({ resume }: { resume?: string }) {
   return (
     <section
       id="home"
